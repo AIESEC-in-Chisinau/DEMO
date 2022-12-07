@@ -2,29 +2,31 @@
 <html lang="en" >
 <head>
   <meta charset="UTF-8">
-  <title>CodePen - WebRTC Simple rear camera</title>
-  
+  <title>CodePen - QR code scanner example</title>
+  <link rel="stylesheet" href="./style.css">
 
 </head>
 <body>
 <!-- partial:index.partial.html -->
-<div id="container">
+<video id="preview"></video>
 
-    <video id="gum-local" autoplay playsinline></video>
-    <button id="showVideo">Open camera</button>
+<script>
+document.addEventListener("DOMContentLoaded", event => {
+  let scanner = new Instascan.Scanner({ video: document.getElementById('preview') });
+  Instascan.Camera.getCameras().then(cameras => {
+    scanner.camera = cameras[cameras.length - 1];
+    scanner.start();
+  }).catch(e => console.error(e));
 
-    <div id="errorMsg"></div>
+  scanner.addListener('scan', content => {
+    console.log(content);
+  });
 
-    <p class="warning"><strong>Warning:</strong> if you're not using headphones, pressing play will cause feedback.</p>
-
-    <p>Display the video stream from <code>getUserMedia()</code> in a video element.</p>
-
-    <p>The <code>MediaStream</code> object <code>stream</code> passed to the <code>getUserMedia()</code> callback is in
-        global scope, so you can inspect it from the console.</p>
-
-</div>
+});
+  
+</script>
 <!-- partial -->
-  <script src='https://webrtc.github.io/adapter/adapter-latest.js'></script><script  src="./script.js"></script>
+  <script  src="./script.js"></script>
 
 </body>
 </html>
